@@ -1,32 +1,27 @@
 import Image from "next/image";
-
-const res = await fetch(`https://simple-frontend.vercel.app/api/items/${id}`, {
-  cache: "no-store",
-});
+import Link from "next/link";
+import { API_URL } from "@/lib/api";
 
 async function getItems() {
-  try {
-    const res = await fetch(`/api/items`, { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to fetch items");
-    return res.json();
-  } catch (err) {
-    console.error("Fetch error:", err);
-    return [];
-  }
+  const res = await fetch(`${API_URL}/items`, { cache: "no-store" });
+  return res.json();
 }
 
-export default async function ItemPage({ params }) {
-  const { id } = params;
-  const res = await fetch(`/api/items/${id}`, { cache: "no-store" });
-  if (!res.ok) return <p>Item not found or server error.</p>;
-  const item = await res.json();
+export default async function ItemsPage() {
+  const items = await getItems();
+
+  if (items.length === 0) return <p>No items found.</p>;
 
   return (
-    <div>
-      <h1>{item.name}</h1>
-      <Image src={item.image} width={400} height={300} alt={item.name} />
-      <p>{item.description}</p>
-      <p>Price: {item.price}</p>
+    <div className="grid grid-cols-3 gap-4">
+      {items.map((item) => (
+        <Link key={item.id} href={`/items/${item.id}`}>
+          <div className="border p-4">
+            <Image src={item.image} width={300} height={200} alt={item.name} />
+            <h3>{item.name}</h3>
+          </div>
+        </Link>
+      ))}
     </div>
   );
 }
