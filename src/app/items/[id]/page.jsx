@@ -6,15 +6,16 @@ export default function ItemDetails({ params }) {
   return <ItemContent id={id} />;
 }
 
-async function ItemContent({ id }) {
-  const res = await fetch(`http://localhost:4000/items/${id}`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    return <h1>Item not found</h1>;
+async function getItem(id) {
+  try {
+    const res = await fetch(`/api/items/${id}`, { cache: "no-store" });
+    if (!res.ok) return null;
+    return res.json();
+  } catch (err) {
+    console.error("Fetch error:", err);
+    return null;
   }
-
+}
   const item = await res.json();
 
   return (

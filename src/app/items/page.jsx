@@ -4,17 +4,14 @@ const res = await fetch(`https://simple-frontend.vercel.app/api/items/${id}`, {
   cache: "no-store",
 });
 
-async function getItem(id) {
+async function getItems() {
   try {
-    const res = await fetch(`${API_URL}/items/${id}`, { cache: "no-store" });
-    if (!res.ok) {
-      console.error("Backend returned status:", res.status);
-      return null;
-    }
+    const res = await fetch(`/api/items`, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to fetch items");
     return res.json();
   } catch (err) {
     console.error("Fetch error:", err);
-    return null;
+    return [];
   }
 }
 
