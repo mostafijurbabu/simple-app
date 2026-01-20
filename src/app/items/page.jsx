@@ -3,8 +3,11 @@ import Link from "next/link";
 import { API_URL } from "@/lib/api";
 
 async function getItems() {
-  const res = await fetch(`${API_URL}/items`, { cache: "no-store" });
-  return res.json();
+  const res = await fetch("https://yes-omega-two.vercel.app/items", {
+    cache: "no-store",
+  });
+  const items = await res.json();
+  return items;
 }
 
 export default async function ItemsPage() {

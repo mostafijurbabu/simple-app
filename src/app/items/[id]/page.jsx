@@ -2,17 +2,11 @@ import Image from "next/image";
 import { API_URL } from "@/lib/api";
 
 async function getItem(id) {
-  try {
-    const res = await fetch(`${API_URL}/items/${id}`, {
-      cache: "no-store",
-    });
-
-    if (!res.ok) return null;
-    return res.json();
-  } catch (err) {
-    console.error("Fetch error:", err);
-    return null;
-  }
+  const res = await fetch(`https://yes-omega-two.vercel.app/items/${id}`, {
+    cache: "no-store",
+  });
+  if (!res.ok) return null;
+  return res.json();
 }
 
 export default async function ItemDetails({ params }) {
