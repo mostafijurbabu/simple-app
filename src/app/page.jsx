@@ -1,6 +1,8 @@
 import Image from "next/image";
 
-const API_URL = "https://yes-dmelz79we-mostafijurs-projects.vercel.app";
+const res = await fetch(`https://simple-frontend.vercel.app/api/items`, {
+  cache: "no-store",
+});
 
 async function getItems() {
   try {

@@ -1,6 +1,8 @@
 import Image from "next/image";
 
-const API_URL = "https://yes-dmelz79we-mostafijurs-projects.vercel.app";
+const res = await fetch(`https://simple-frontend.vercel.app/api/items/${id}`, {
+  cache: "no-store",
+});
 
 async function getItem(id) {
   try {
@@ -18,22 +20,16 @@ async function getItem(id) {
 
 export default async function ItemPage({ params }) {
   const { id } = params;
-  const item = await getItem(id);
-
-  if (!item) return <p>Item not found or server error.</p>;
+  const res = await fetch(`/api/items/${id}`, { cache: "no-store" });
+  if (!res.ok) return <p>Item not found or server error.</p>;
+  const item = await res.json();
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">{item.name}</h1>
-      <Image
-        src={item.image}
-        width={400}
-        height={300}
-        alt={item.name}
-        className="object-cover"
-      />
+    <div>
+      <h1>{item.name}</h1>
+      <Image src={item.image} width={400} height={300} alt={item.name} />
       <p>{item.description}</p>
-      <p className="font-semibold mt-2">Price: {item.price} BDT</p>
+      <p>Price: {item.price}</p>
     </div>
   );
 }
