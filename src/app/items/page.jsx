@@ -1,34 +1,30 @@
-"use client";
+import Image from "next/image";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
+const API_URL = "https://yes-dmelz79we-mostafijurs-projects.vercel.app";
 
-export default function Items() {
-  const [items, setItems] = useState([]);
+async function getItem(id) {
+  try {
+    const res = await fetch(`${API_URL}/items/${id}`, { cache: "no-store" });
+    if (!res.ok) return null;
+    return res.json();
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
 
-  useEffect(() => {
-    fetch("http://localhost:4000/items")
-      .then((res) => res.json())
-      .then((data) => setItems(data))
-      .catch((err) => console.error(err));
-  }, []);
+export default async function ItemPage({ params }) {
+  const { id } = params;
+  const item = await getItem(id);
+
+  if (!item) return <p>Item not found or server error.</p>;
 
   return (
-    <div className="grid grid-cols-3 gap-4 p-4">
-      {items.map((item) => (
-        <Link key={item.id} href={`/items/${item.id}`}>
-          <div className="border p-2 rounded shadow cursor-pointer hover:shadow-lg transition">
-            <img
-              src={item.image}
-              alt={item.name}
-              className="w-full h-40 object-cover"
-            />
-            <h3 className="font-bold">{item.name}</h3>
-            <p>{item.description}</p>
-            <p className="text-green-600 font-semibold">৳ {item.price}</p>
-          </div>
-        </Link>
-      ))}
+    <div className="p-4">
+      <h1 className="text-2xl font-bold">{item.name}</h1>
+      <Image src={item.image} width={400} height={300} alt={item.name} />
+      <p>{item.description}</p>
+      <p className="font-semibold">Price: {item.price} BDT</p>
     </div>
   );
 }
