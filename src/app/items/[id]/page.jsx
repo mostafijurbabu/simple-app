@@ -16,7 +16,6 @@ async function getItem(id) {
 }
 
 export default async function ItemDetails({ params }) {
-  // 🔥 params Promise — MUST await
   const { id } = await params;
 
   const item = await getItem(id);
