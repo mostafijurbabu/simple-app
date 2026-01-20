@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { NextResponse } from "next/server";
 
 export function middleware(req) {
@@ -8,7 +7,7 @@ export function middleware(req) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 }
-=======
+
 import { NextResponse } from "next/server";
 
 export function middleware(req) {
@@ -18,4 +17,3 @@ export function middleware(req) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 }
->>>>>>> 60d0217cdc925a8b179627c371eb4e12afa529f1
